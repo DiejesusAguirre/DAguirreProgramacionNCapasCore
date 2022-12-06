@@ -1,0 +1,84 @@
+﻿@model ML.Aseguradora
+@{
+    ViewBag.Title = "Registro de Asegurados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md-12">
+
+            @using (Html.BeginForm("Form", "Aseguradora", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.IdAseguradora, new { @class = "d-none" })
+
+                            @Html.TextBoxFor(model => model.IdAseguradora, new { @class = "d-none form-control" })
+
+                            @Html.ValidationMessageFor(model => model.IdAseguradora)
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Nombre)
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-building-fill-check"></i></span>
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                            @Html.ValidationMessageFor(model => model.Nombre)
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Usuario.IdUsuario,  "Nombre del Usuario", htmlAttributes: new {@class="control-label"})
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-building-fill-check"></i></span>
+                            @Html.DropDownListFor(model => model.Usuario.IdUsuario, new SelectList(Model.Usuario.Usuarios, "IdUsuario", "NombreCompleto"), "Selecciona una opción", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Usuario.IdUsuario)
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+
+
+                            <input type="submit" value="Guardar" class="btn btn-success" />
+
+                            @Html.ActionLink("Regresar", "GetAll", "Aseguradora", htmlAttributes: new { @class = "btn btn-danger" })
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+
+
+        </div>
+    </div>
+</div>

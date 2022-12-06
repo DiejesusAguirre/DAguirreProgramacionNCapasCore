@@ -1,0 +1,332 @@
+﻿@model ML.Empleado
+@{
+    ViewBag.Title = "Empleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <br />
+                <div class="form-horizontal">
+
+                    <div class="row">
+
+                        @if (Model.Action == "Add")
+                        {
+                            <div class="col-3">
+
+                                @Html.LabelFor(model => model.NumeroEmpleado)
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="bi bi-123"></i></span>
+                                @Html.TextBoxFor(model => model.NumeroEmpleado, new { @class = "form-control", @id = "txtNumeroEmpleado" })
+                                @Html.ValidationMessageFor(model => model.NumeroEmpleado)
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-3">
+
+                                @Html.LabelFor(model => model.NumeroEmpleado)
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="bi bi-123"></i></span>
+                                @Html.TextBoxFor(model => model.NumeroEmpleado, new { @class = "form-control ", @id = "txtNumeroEmpleado", @disabled = "disabled"})
+                                @Html.ValidationMessageFor(model => model.NumeroEmpleado)
+                                </div>
+                            </div>
+                        }
+
+
+                        <div class="col-3">
+
+                            @Html.LabelFor(model => model.RFC)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-file-person-fill"></i></span>
+                                @Html.TextBoxFor(model => model.RFC, new { @class = "form-control", @id = "txtRFC" })
+                                @Html.ValidationMessageFor(model => model.RFC)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Nombre)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre", autocomplete = "off", @onkeypress="return SoloLetras(event, 'lblNombre')" })
+                                @Html.ValidationMessageFor(model => model.Nombre)
+                            </div>
+                            @Html.Label("",null, new{@id="lblNombre"})
+                        </div>
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.ApellidoPaterno)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", autocomplete = "off", @id="txtApellidoPaterno", @onkeypress="return SoloLetras(event, 'lblApellidoPaterno')" })
+                                @Html.ValidationMessageFor(model => model.ApellidoPaterno)
+                            </div>
+                            @Html.Label("",null, new{@id="lblApellidoPaterno"})
+                        </div>
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.ApellidoMaterno)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control",autocomplete = "off", @id="txtApellidoMaterno", @onkeypress="return SoloLetras(event, 'lblApellidoMaterno')"})
+                                @Html.ValidationMessageFor(model => model.ApellidoMaterno)
+                            </div>
+                            @Html.Label("",null, new{@id="lblApellidoMaterno"})
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Email)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-envelope-at-fill"></i></span>
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "txtEmail", @onkeypress="ValidateEmail();", @autocomplete = "off"})
+                                @Html.ValidationMessageFor(model => model.Email)
+                            </div>
+                            @Html.Label("",null, new{@id="lblEmail", @style="color: red"})
+                        </div>
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Telefono)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", @autocomplete = "off", @id="txtTelefono",@onkeypress="return SoloNumeros(event, 'lblTelefono')"})
+                            @Html.ValidationMessageFor(model => model.Telefono)
+                            </div>
+                            @Html.Label("",null, new{@id="lblTelefono"})
+                        </div>
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.NSS)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-file-earmark-binary"></i></span>
+                                @Html.TextBoxFor(model => model.NSS, new { @class = "form-control", @id = "txtNSS", @onkeypress="return SoloNumeros(event, 'lblTelefono')", @autocomplete = "off"})
+                            @Html.ValidationMessageFor(model => model.NSS)
+                            </div>
+                            @Html.Label("",null, new{@id="lblNSS"})
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Empresa.IdEmpresa)<br />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-building-check"></i></span>
+                            @Html.DropDownListFor(model => model.Empresa.IdEmpresa, new SelectList(Model.Empresa.Empresas, "IdEmpresa", "Nombre"), "Selecciona una opción", new { @class = "form-control btn btn-info dropdown-toggle dropdown-toggle-split" })
+                            @Html.ValidationMessageFor(model => model.Empresa.IdEmpresa)
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.FechaNacimiento)<br />
+
+                            <div class="input-group mb-3">
+
+                                <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
+
+                                @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control", @id="dpFecha", @placeholder = "dd-mm-yyyy", autocomplete = "off"})
+
+                                @Html.ValidationMessageFor(model => model.FechaNacimiento)
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.FechaIngreso)
+
+                            <div class="input-group mb-3">
+
+                                <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
+
+                                @Html.TextBoxFor(model => model.FechaIngreso, new { @class = "form-control", @id="dpFechaIngreso", @placeholder = "dd-mm-yyyy", autocomplete = "off"})
+
+                                @Html.ValidationMessageFor(model => model.FechaIngreso)
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class=" offset-md-12">
+
+                        @Html.LabelFor(model => model.Foto)
+                        <div>
+                            <input type="file" name="IfImage" id="IfImage" onchange="validateFile(this), readURL(this);" />
+                        </div>
+                        @if (Model.Foto != null)
+                        {
+                            <img id="ImagenPreview" src="data:image/*;base64,@Model.Foto" style="height:180px; width:200px;" class="img-thumbnail" />
+                        }
+                        else
+                        {
+                            <img src="~/SinFoto.jpg" id="ImagenPreview" style="height:auto; width:auto;" class="img-thumbnail" />
+                        }
+
+                        @Html.ValidationMessageFor(model => model.Foto)
+                    </div>
+                    @Html.HiddenFor(model => model.Foto)
+
+                    @Html.HiddenFor(model => model.Action)
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            <input type="submit" value="Guardar" class="btn btn-success" />
+
+                            @Html.ActionLink("Regresar", "GetAll", "Empleado", htmlAttributes: new { @class = "btn btn-danger" })
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+    {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(function () {
+                $("#dpFecha").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: '-100:+0',
+                    maxDate: '0'
+                });
+                $("#dpFechaIngreso").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: '-100:+0',
+                    maxDate: '0'
+                });
+            });
+
+            //Previsualizacion de laImagen
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#ImagenPreview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#IfImage").change(function () {
+                // Código a ejecutar cuando se detecta un cambio de archivO
+                readURL(this);
+            });
+
+            //Validar que sea PNG o JPG
+            function validateFile() {
+                var allowedExtension = ['jpeg', 'jpg', 'png'];
+                var fileExtension = document.getElementById('IfImage').value.split('.').pop().toLowerCase();
+                var isValidFile = false;
+                for (var index in allowedExtension) {
+                    if (fileExtension === allowedExtension[index]) {
+                        isValidFile = true;
+                        break;
+                    }
+                }
+                if (!isValidFile) {
+                    alert('Las extensiones permitidas son : *.' + allowedExtension.join(', *.'));
+                    document.getElementById('IfImage').value = "";
+                }
+                return isValidFile;
+            }
+
+            //$("#IfImage").change(function () {
+            //    let input = $(this);
+            //    let extencion = input.val().split(".").pop().toLowerCase();
+            //    if (input.val() != "") {
+            //        if (extencion != "jpg" && extencion != "png") {
+            //            input.replaceWith(input.val('').clone(true));
+            //            alert("imagen no permitida");
+            //        }
+            //    } else {
+            //        alert("favor de cargar una imagen");
+            //    }
+            //});
+
+        });
+
+        //Metodo para Validar con puros numeros
+        function SoloNumeros(e, controlId) {
+            var caracter = e.key;
+            if (!/^[0-9]/g.test(caracter)) {
+
+                $('#' + controlId).text("Solo se aceptan numeros y deben ser 10 digitos");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+            else {
+                $('#' + controlId).text("");
+                return true;
+            }
+        }
+
+        //Metodo para Validar con puras Letras
+        function SoloLetras(e, controlId) {
+            var caracter = e.key;
+            if (!/[A-Za-z ]/g.test(caracter)) {
+                $('#' + controlId).text("Solo se aceptan letras minusculas o mayusculas");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+            else {
+                $('#' + controlId).text("");
+                return true;
+            }
+        }
+
+        //Metodo para Validar un email
+        function ValidateEmail() {
+            var email = document.getElementById("txtEmail").value;
+            var lblError = document.getElementById("lblEmail");
+            lblError.innerHTML = "";
+            var expr = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!expr.test(email)) {
+                lblError.innerHTML = "El correo es incorrecto";
+
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,8 @@
+No se insertó el Usuario con el nombre: Africa Error: Violation of UNIQUE KEY constraint 'unica'. Cannot insert duplicate key in object 'dbo.Usuario'. The duplicate key value is (AfriWA).
+Cannot insert the value NULL into column 'IdUsuario', table 'DAguirreProgramacionNCapas.dbo.Direccion'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+The statement has been terminated.
+No se insertó el Usuario con el nombre: Antonio Error: Violation of UNIQUE KEY constraint 'unica'. Cannot insert duplicate key in object 'dbo.Usuario'. The duplicate key value is (ToñoW00).
+Cannot insert the value NULL into column 'IdUsuario', table 'DAguirreProgramacionNCapas.dbo.Direccion'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+The statement has been terminated.

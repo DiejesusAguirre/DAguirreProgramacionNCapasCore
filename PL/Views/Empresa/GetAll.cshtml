@@ -1,0 +1,103 @@
+﻿@model ML.Empresa
+@{
+    ViewBag.Title = "Empresas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <p>Aqui puede ver, editar o agrgar a una Empresa</p>
+    <p>Para agregar a una Empresa presione el boton verde</p>
+    <p>Para editar a una Empresa presione el boton amarillo</p>
+    <p>Para eliminar una Empresa presione el boton rojo</p>
+
+    <div class="row" style="float:right">
+        <div style="float:right">
+            @Html.ActionLink("Añadir +", "Form", "Empresa", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+
+    @using (Html.BeginForm("GetAll", "Empresa", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-3">
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder="Nombre" })
+            </div>
+            <div class="col-md-3">
+                <input type="submit" value="Buscar" class="btn btn-success" />
+            </div>
+        </div>
+    }
+
+    <div class="row">
+
+        <table class="table table-dark" id="tblEmpresa">
+            <thead>
+                <tr>
+                    <th>Editar</th>
+                    <th style="display :none">ID Empresa</th>
+                    <th>Nombre de la Empresa</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
+                    <th>Direccion Web</th>
+                    <th>Logo de la Empresa</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Empresa empresa in Model.Empresas)
+                {
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Empresa", new { IdEmpresa = empresa.IdEmpresa})"></a></td>
+                        <td style="display :none">@empresa.IdEmpresa</td>
+                        <td>@empresa.Nombre</td>
+                        <td>@empresa.Telefono</td>
+                        <td>@empresa.Email</td>
+                        <td>@empresa.DireccionWeb</td>
+                        @if (empresa.Logo != null)
+                        {
+
+
+                            <td><img src="data:image/jpeg;base64, @empresa.Logo" style="height:150px; width:150px;" /></td>
+                        }
+                        else
+                        {
+                            <td><img src="~/UsuarioSinFoto.png" style="height:150px; width:150px;" /></td>
+                        }
+                        <td class="text-center"><a class="btn btn-danger bi bi-trash-fill" href="@Url.Action("Delete", "Empresa", new { IdEmpresa = empresa.IdEmpresa })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i></a></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts
+    {
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblEmpresa').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'select-checkbox',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+    </script>
+}

@@ -1,0 +1,217 @@
+﻿@model ML.Empresa
+@{
+    ViewBag.Title = "Registrar Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h2>Form</h2>
+    <div class="row">
+        <div class="col-md-12">
+
+            @using (Html.BeginForm("Form", "Empresa", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.IdEmpresa, new { @class = "d-none" })
+
+                            @Html.TextBoxFor(model => model.IdEmpresa, new { @class = "d-none form-control" })
+
+                            @Html.ValidationMessageFor(model => model.IdEmpresa)
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Nombre)
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-building-check"></i></span>
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre", @onkeypress="return SoloLetras(event, 'lblNombre')", autocomplete = "off", @required = true})
+                            @Html.ValidationMessageFor(model => model.Nombre)
+                            </div>
+                            @Html.Label("",null, new{@id="lblNombre"})
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Email)
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder="name@example.com", autocomplete = "off", @id="txtEmail", @onkeypress="ValidateEmail();", @required = true})
+                            @Html.ValidationMessageFor(model => model.Email)
+                            </div>
+                            @Html.Label("",null, new{@id="lblEmail", @style="color: red"})
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.Telefono)
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", @onkeypress="return SoloNumeros(event, 'lblTelefono')",autocomplete = "off", @required = true})
+                            @Html.ValidationMessageFor(model => model.Telefono)
+                            </div>
+                            @Html.Label("",null,new {@id="lblTelefono"})
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            @Html.LabelFor(model => model.DireccionWeb)
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                @Html.TextBoxFor(model => model.DireccionWeb, new { @class = "form-control", @placeholder="www.example.com", @required = true})
+                            @Html.ValidationMessageFor(model => model.DireccionWeb)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class=" offset-md-12">
+                            @Html.LabelFor(model => model.Logo)
+                            <div>
+                                <input type="file" name="IfImage" id="IfImage" onchange="readURL(this);" />
+                            </div>
+                            @if (Model.Logo != null)
+                            {
+                                <img id="ImagenPreview" src="data:image/*;base64,@Model.Logo" style="height:180px; width:200px;" class="img-thumbnail" />
+                            }
+                            else
+                            {
+                                <img id="ImagenPreview" src="~/UsuarioSinFoto.png" style="height:180px; width:200px;" class="img-thumbnail" />
+                            }
+
+                            @Html.ValidationMessageFor(model => model.Logo)
+                        </div>
+                        @Html.HiddenFor(model => model.Logo)
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+                            <input type="submit" value="Guardar" class="btn btn-success" />
+
+                            @Html.ActionLink("Regresar", "GetAll", "Aseguradora", htmlAttributes: new { @class = "btn btn-danger" })
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#ImagePreview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#IfImage").change(function () {
+                // Código a ejecutar cuando se detecta un cambio de archivO
+                readURL(this);
+            });
+
+
+            $("#IfImage").change(function () {
+                let input = $(this);
+                let extencion = input.val().split(".").pop().toLowerCase();
+                if (input.val() != "") {
+                    if (extencion != "jpg" && extencion != "png") {
+                        input.replaceWith(input.val('').clone(true));
+                        alert("imagen no permitida");
+                    }
+                } else {
+                    alert("favor de cargar una imagen");
+                }
+            });
+
+
+
+        });
+
+        //Metodo para Validar con puros numeros
+        function SoloNumeros(e, controlId) {
+            var caracter = e.key;
+            if (!/^[0-9]/g.test(caracter)) {
+
+                $('#' + controlId).text("Solo se aceptan numeros y deben ser 10 digitos");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+            else {
+                $('#' + controlId).text("");
+                return true;
+            }
+        }
+
+        //Metodo para Validar con puras Letras
+        function SoloLetras(e, controlId) {
+            var caracter = e.key;
+            if (!/[A-Za-z ]/g.test(caracter)) {
+                $('#' + controlId).text("Solo se aceptan letras minusculas o mayusculas");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+            else {
+                $('#' + controlId).text("");
+                return true;
+            }
+        }
+
+        //Metodo para Validar un email
+        function ValidateEmail() {
+            var email = document.getElementById("txtEmail").value;
+            var lblError = document.getElementById("lblEmail");
+            lblError.innerHTML = "";
+            var expr = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!expr.test(email)) {
+                lblError.innerHTML = "El correo es incorrecto";
+
+            }
+        }
+
+
+    </script>
+}

@@ -1,0 +1,62 @@
+﻿@model ML.Empleado
+@{
+    ViewBag.Title = "Empleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    <p>Aqui puede ver, editar o agrgar a una Aseguradora</p>
+    <p>Para agregar a una Aseguradora presione el boton verde</p>
+    <p>Para editar a una Aseguradora presione el boton amarillo</p>
+    <p>Para eliminar una Aseguradora presione el boton rojo</p>
+    <hr class="hr" />
+    <div class="row" style="float:right">
+        
+    </div>
+    <hr class="hr" />
+    <div class="row">
+
+        <table class="table table-dark" id="tblAseguradora">
+            <thead>
+                <tr>
+                    <th>SELECCIONAR</th>
+                    <th>Numero de Empleado</th>
+                    <th>RFC</th>
+                    <th>Nombre del Empleado</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Numero de Seguro Social (NSS)</th>
+                    <th>Fecha de Ingreso</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Empleado empleado in Model.Empleados)
+                {
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("GetAllDependientes", "Dependiente", new { NumeroEmpleado = empleado.NumeroEmpleado})"></a></td>
+                        <br />
+
+                        <td>@empleado.NumeroEmpleado</td>
+                        <td>@empleado.RFC</td>
+                        <td>@empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno</td>
+                        <td>@empleado.FechaNacimiento</td>
+                        <td>@empleado.NSS</td>
+                        <td>@empleado.FechaIngreso</td>
+                        @if (empleado.Foto != "")
+                        {
+                            <td><img src="data:image/jpeg;base64, @empleado.Foto" style="height:150px; width:150px;" /></td>
+                        }
+                        else
+                        {
+                            <td><img src="~/SinFoto.jpg" style="height:150px; width:150px;" /></td>
+                        }
+                        @Html.HiddenFor(model => model.NumeroEmpleado)
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
