@@ -35,7 +35,7 @@
                 @foreach (ML.Empleado empleado in Model.Empleados)
                 {
                     <tr>
-                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("GetAllDependientes", "Dependiente", new { NumeroEmpleado = empleado.NumeroEmpleado})"></a></td>
+                        <td class="text-center"><a class="btn btn-success bi bi-check2-circle" href="@Url.Action("GetAllDependientes", "Dependiente", new { NumeroEmpleado = empleado.NumeroEmpleado})"></a></td>
                         <br />
 
                         <td>@empleado.NumeroEmpleado</td>

@@ -36,23 +36,24 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (ML.Dependiente dependiente in Model.Dependientes)
-                {
-                        <tr>
-                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Dependiente", new { IdDependiente = dependiente.IdDependiente})"></a></td>
-                            <br />
 
-                            <td style="display :none">@dependiente.IdDependiente</td>
-                            <td>@dependiente.Nombre @dependiente.ApellidoPaterno @dependiente.ApellidoMaterno</td>
-                            <td>@dependiente.RFC</td>
-                            <td>@dependiente.FechaDeNacimiento</td>
-                            <td>@dependiente.Civil.Nombre</td>
-                            <td>@dependiente.Genero</td>
-                            <td>@dependiente.Telefono</td>
-                            <td>@dependiente.Tipo.Nombre</td>
-                        <td class="text-center"><a class="btn btn-danger bi bi-trash-fill" href="@Url.Action("Delete", "Dependiente", new { IdDependiente = dependiente.IdDependiente})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i></a></td>
 
-                        </tr>
+                @{
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Dependiente", new { IdDependiente = Model.IdDependiente})"></a></td>
+                        <br />
+
+                        <td style="display :none">@Model.IdDependiente</td>
+                        <td>@Model.Nombre @Model.ApellidoPaterno @Model.ApellidoMaterno</td>
+                        <td>@Model.RFC</td>
+                        <td>@Model.FechaDeNacimiento</td>
+                        <td>@Model.Civil.Nombre</td>
+                        <td>@Model.Genero</td>
+                        <td>@Model.Telefono</td>
+                        <td>@Model.Tipo.Nombre</td>
+                        <td class="text-center"><a class="btn btn-danger bi bi-trash-fill" href="@Url.Action("Delete", "Dependiente", new { IdDependiente = Model.IdDependiente})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class="bi bi-eraser-fill" style="color: mintcream"></i></a></td>
+
+                    </tr>
                 }
 
             </tbody>

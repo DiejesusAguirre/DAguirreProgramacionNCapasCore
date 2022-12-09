@@ -53,7 +53,7 @@ namespace SL.Controllers
             {
                 //Update
                 ML.Result result = new ML.Result();
-                    result =BL.Usuario.GetById(idUsuario);
+                result = BL.Usuario.GetById(idUsuario);
 
                 if (result.Correct)
                 {
@@ -93,7 +93,7 @@ namespace SL.Controllers
             usuario.ROL.IdRol = (idRol == null) ? 0 : idRol;
 
 
-            usuario.ROL = new ML.Rol();
+            
             ML.Result result = BL.Usuario.GetAll(usuario);
             ML.Result resultRol = BL.Rol.GetAll();
 
@@ -167,5 +167,51 @@ namespace SL.Controllers
                 }
             }
         }
+
+        [HttpGet("Login")]
+        public IActionResult Login()
+        {
+            return Ok();
+        }
+
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody]ML.Usuario usuario)
+        {
+            ML.Result result = new ML.Result();
+            ML.Usuario usuarioLogin = new ML.Usuario();
+            usuario.ROL = new ML.Rol();
+            ML.Result resultRol = BL.Rol.GetAll();
+            result = BL.Usuario.Login(usuario);
+            
+            if (result.Correct)
+            {
+                usuarioLogin = (ML.Usuario)result.Object;
+                if (usuario.Password == usuarioLogin.Password)
+                {
+                    if (usuarioLogin.ROL.IdRol == 1 || usuarioLogin.ROL.IdRol == 3)
+                    {
+                        return Ok(result);
+                        //return Ok(result + "" + RedirectToAction("Index", "Home"));
+                        //return RedirectToAction("Index", "Home");
+                    }
+                    if (usuarioLogin.ROL.IdRol == 2)
+                    {
+                        return Ok(result);
+                        //return Ok(result +""+RedirectToAction("Form", "Usuario"));
+                        //return RedirectToAction("Form", "Usuario");
+                    }
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

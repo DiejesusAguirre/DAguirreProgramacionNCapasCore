@@ -394,5 +394,45 @@ namespace BL
             }
             return result;
         }
+
+        public static ML.Result Login(ML.Usuario usuario)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.DaguirreProgramacionNcapasContext context = new DL.DaguirreProgramacionNcapasContext())
+                {
+                    var codigo = context.Usuarios.FromSqlRaw($"LoginGetByIdUserName '{usuario.UserName}'").AsEnumerable().FirstOrDefault();
+
+                    if (codigo != null)
+                    {
+
+                        ML.Usuario usuarioobj = new ML.Usuario();
+                        usuarioobj.ROL = new ML.Rol();
+
+                        usuarioobj.Password = codigo.Password;
+                        usuarioobj.UserName = codigo.UserName;
+                        usuarioobj.ROL.IdRol = (int)codigo.IdRol;
+                       
+
+                        result.Object = usuarioobj;
+
+
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = "Hubo un error";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+            }
+            return result;
+        }
     }
 }

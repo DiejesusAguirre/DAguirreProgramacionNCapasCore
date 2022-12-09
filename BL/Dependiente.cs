@@ -63,7 +63,7 @@ namespace BL
             return result;
         }
 
-        public static ML.Result GetById(int IdDependiente)
+        public static ML.Result GetById(int? IdDependiente)
         {
             ML.Result result = new ML.Result();
             try
@@ -79,6 +79,7 @@ namespace BL
 
                         ML.Dependiente dependiente = new ML.Dependiente();
                         dependiente.Tipo = new ML.DependienteTipo();
+                        dependiente.Civil = new ML.EstadoCivil();
 
                         dependiente.IdDependiente = codigo.IdDependiente;
                         dependiente.NumeroEmpleado = codigo.NumeroEmpleado;

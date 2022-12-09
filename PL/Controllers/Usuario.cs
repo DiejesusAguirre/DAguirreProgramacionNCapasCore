@@ -406,6 +406,108 @@ namespace PL.Controllers
                 }
             }
         }
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(ML.Usuario usuario)
+        {
+
+            ML.Result result = new ML.Result();
+            usuario.ROL = new ML.Rol();
+            usuario.Direccion = new ML.Direccion();
+            usuario.Direccion.Colonia = new ML.Colonia();
+            usuario.Direccion.Colonia.Municipio = new ML.Municipio();
+            usuario.Direccion.Colonia.Municipio.Estado = new ML.Estado();
+            usuario.Direccion.Colonia.Municipio.Estado.Pais = new ML.Pais();
+            ML.Result resultRol = BL.Rol.GetAll();
+            //result = BL.Usuario.Login(usuario);
+            usuario.Nombre = (usuario.Nombre == null) ? "" : usuario.Nombre;
+            usuario.ApellidoPaterno = (usuario.ApellidoPaterno == null) ? "" : usuario.ApellidoPaterno;
+            usuario.ApellidoMaterno = (usuario.ApellidoMaterno == null) ? "" : usuario.ApellidoMaterno;
+            usuario.Sexo = (usuario.Sexo == null) ? "" : usuario.Sexo;
+            usuario.Email = (usuario.Email == null) ? "" : usuario.Email;
+            usuario.FechaDeNacimiento = (usuario.FechaDeNacimiento == null) ? "" : usuario.FechaDeNacimiento;
+            usuario.Telefono = (usuario.Telefono == null) ? "" : usuario.Telefono;
+            usuario.Celular = (usuario.Celular == null) ? "" : usuario.Celular;
+            usuario.CURP = (usuario.CURP == null) ? "" : usuario.CURP;
+            usuario.Imagen = (usuario.Imagen == null) ? "" : usuario.Imagen;
+            usuario.NombreCompleto = (usuario.NombreCompleto == null) ? "" : usuario.NombreCompleto;
+            usuario.ConfirmPasword = (usuario.ConfirmPasword == null) ? "" : usuario.ConfirmPasword;
+            usuario.Direccion.Calle = (usuario.Direccion.Calle == null) ? "" : usuario.Direccion.Calle;
+            usuario.Direccion.NumeroExterior = (usuario.Direccion.NumeroExterior == null) ? "" : usuario.Direccion.NumeroExterior;
+            usuario.Direccion.NumeroInterior = (usuario.Direccion.NumeroInterior == null) ? "" : usuario.Direccion.NumeroInterior;
+            //usuario.Direccion.Direcciones = (usuario.Direccion.Direcciones == null) ?  : usuario.Direccion.Direcciones;
+            usuario.Direccion.Colonia.Nombre = (usuario.Direccion.Colonia.Nombre == null) ? "" : usuario.Direccion.Colonia.Nombre;
+            usuario.Direccion.Colonia.CodigoPostal = (usuario.Direccion.Colonia.CodigoPostal == null) ? "" : usuario.Direccion.Colonia.CodigoPostal;
+            //usuario.Direccion.Colonia.Colonias = (usuario.Direccion.Colonia.Colonias == null) ? 0 : usuario.Direccion.Colonia.Colonias;
+            usuario.Direccion.Colonia.Municipio.Nombre = (usuario.Direccion.Colonia.Municipio.Nombre == null) ? "" : usuario.Direccion.Colonia.Municipio.Nombre;
+            usuario.Direccion.Colonia.Municipio.Estado.Nombre = (usuario.Direccion.Colonia.Municipio.Estado.Nombre == null) ? "" : usuario.Direccion.Colonia.Municipio.Estado.Nombre;
+            usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre = (usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre == null) ? "" : usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre;
+            usuario.ROL.IdRol = (usuario.ROL.IdRol == null) ? 0 : usuario.ROL.IdRol;
+            usuario.ROL.NombreROL = (usuario.ROL.NombreROL == null) ? "" : usuario.ROL.NombreROL;
+            usuario.ROL.Roles = resultRol.Objects;
+            ML.Usuario resultItemList = new ML.Usuario();
+            try
+            {
+                //Se manda la url desde el appsettings
+                string urlApi = _configuration["urlAPI"];
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(urlApi);
+                    //Aqui es como si hiciera el BL.Usuario.GetAll pero a los servicios
+                    var responseTask = client.PostAsJsonAsync("Usuario/Login", usuario);
+
+                    responseTask.Wait();
+                    var resultServices = responseTask.Result;
+
+                    if (resultServices.IsSuccessStatusCode)
+                    {
+                        var readTask = resultServices.Content.ReadAsAsync<ML.Result>();
+                        readTask.Wait();
+
+
+                        //ML.Usuario resultItemList = new ML.Usuario();
+                        resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Usuario>(readTask.Result.Object.ToString());
+                        result.Object = resultItemList;
+
+                        result.Correct = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+            }
+            if (result.Correct)
+            {
+                
+                if (resultItemList.ROL.IdRol == 1 || resultItemList.ROL.IdRol == 3)
+                {
+                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                }
+                if (resultItemList.ROL.IdRol == 2)
+                {
+                    return RedirectToAction("Form", "Usuario");
+                    //return RedirectToAction("Form", "Usuario");
+                }
+                else
+                {
+                    ViewBag.Message = "Contraseña y usuario incorrecto";
+                    return PartialView("ModalLogin");
+                }
+
+            }
+            else
+            {
+                ViewBag.Message = "Contraseña y usuario incorrecto";
+                return PartialView("ModalLogin");
+            }
+        }
 
 
         public JsonResult GetEstado(int IdPais)
