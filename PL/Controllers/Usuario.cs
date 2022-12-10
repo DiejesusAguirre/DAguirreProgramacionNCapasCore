@@ -78,7 +78,7 @@ namespace PL.Controllers
         {
             ML.Result result = new ML.Result();
             //result = BL.Usuario.GetAll(usuario);
-            usuario.ROL = new ML.Rol();
+            //usuario.ROL = new ML.Rol();
             usuario.Direccion = new ML.Direccion();
             usuario.Direccion.Colonia = new ML.Colonia();
             usuario.Direccion.Colonia.Municipio = new ML.Municipio();
@@ -116,7 +116,7 @@ namespace PL.Controllers
                     usuario.Direccion.Colonia.Municipio.Nombre = (usuario.Direccion.Colonia.Municipio.Nombre == null) ? "" : usuario.Direccion.Colonia.Municipio.Nombre;
                     usuario.Direccion.Colonia.Municipio.Estado.Nombre = (usuario.Direccion.Colonia.Municipio.Estado.Nombre == null) ? "" : usuario.Direccion.Colonia.Municipio.Estado.Nombre;
                     usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre = (usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre == null) ? "" : usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre;
-                    usuario.ROL.IdRol = (usuario.ROL.IdRol == null) ? 0 : usuario.ROL.IdRol;
+                    
                     usuario.ROL.NombreROL = (usuario.ROL.NombreROL == null) ? "" : usuario.ROL.NombreROL;
 
                     client.BaseAddress = new Uri(urlApi);
@@ -131,6 +131,7 @@ namespace PL.Controllers
                         var readTask = resultServices.Content.ReadAsAsync<ML.Result>();
                         readTask.Wait();
 
+                        result.Objects = new List<object>();
                         foreach (var resultItem in readTask.Result.Objects)
                         {
                             ML.Usuario resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Usuario>(resultItem.ToString());

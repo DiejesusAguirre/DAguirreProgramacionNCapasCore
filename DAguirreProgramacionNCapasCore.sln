@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DL", "DL\DL.csproj", "{9ACF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL_Co", "PL_Co\PL_Co.csproj", "{CAF60A8C-8422-4057-97A9-82862A6E4544}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SL", "SL\SL.csproj", "{3C607926-F51A-4EA5-BA77-A5EF4B559701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SL", "SL\SL.csproj", "{3C607926-F51A-4EA5-BA77-A5EF4B559701}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
